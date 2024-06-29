@@ -1,0 +1,71 @@
+<div>
+    <form [formGroup]="firstFormGroup" class="example-form">
+        <ng-template>Please Enter N Between 1-20</ng-template>
+        <mat-form-field appearance="fill" class="example-full-width" >
+            <mat-label>N Number</mat-label>
+            <input matInput placeholder="Enter N Between 1-20" formControlName="firstCtrl" required>
+        </mat-form-field>
+        <div>
+            <button mat-button (click)="getAllByN()">Get Data</button>
+        </div>
+        <form [formGroup]="secondFormGroup" class="example-form" errorMessage="Field is required.">
+            <ng-template> Combination</ng-template>
+            <mat-form-field appearance="fill" class="example-full-width" >
+                <mat-label> Combination</mat-label>
+                <input matInput placeholder="Set Combination" formControlName="secondCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button (click)="onPaginatorStepByCurrentCombination() ">Get 10 Next</button>
+            </div>
+        </form>
+    </form>
+</div>
+
+<button  mat-raised-button color="primary" (click)="resetNumber()">
+    Reset
+</button>
+
+<div class="example-container mat-elevation-z8">
+    <div class="example-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+
+    </div>
+
+    <div class="example-table-container">
+
+        <table mat-table [dataSource]="data" class="example-table" matSort matSortActive="created" matSortDisableClear
+            matSortDirection="desc">
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef>position</th>
+                <td mat-cell *matCellDef="let row">{{row.position}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>description</th>
+                <td mat-cell *matCellDef="let row">{{row.description}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="combination">
+                <th mat-header-cell *matHeaderCellDef>combination</th>
+                <td mat-cell *matCellDef="let row">{{row.combination}}</td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+
+    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="resultsLength"
+        [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+        [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+    </mat-paginator>
+
+
+</div>
+
+
+
+
+

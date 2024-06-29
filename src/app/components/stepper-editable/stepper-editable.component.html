@@ -1,0 +1,106 @@
+
+
+<h2 class="mat-h2">All Possible Combinations of N are {{combinationsTotal}} </h2>
+
+<mat-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup" errorMessage="N is required.">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel="0">Please Enter N Between 1-20</ng-template>
+            <mat-form-field appearance="fill">
+                <mat-label>N Number</mat-label>
+                <input matInput placeholder="Enter N Between 1-20" formControlName="firstCtrl" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext (click)="onSubmitFirstStep()">Next</button>
+                <button mat-button (click)="getAllByN()">Get all</button>
+                <button mat-button (click)="resetNumber()">Reset</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" errorMessage="{{counterCombination}} N Combination is required.">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>{{counterCombination}} Combination</ng-template>
+            <mat-form-field appearance="fill" class="combination">
+                <mat-label>{{counterCombination}} N Combination</mat-label>
+                <input matInput placeholder="{{counterCombination}} N Combination" formControlName="secondCtrl"
+                    readonly>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext (click)="onSubmitSecondCombination()">Next</button>
+                <button mat-button (click)="onPaginatorFirstCombination()">Get Next Pagination </button>
+            </div>
+        </form>
+    </mat-step>
+
+    <!-- <div *ngFor="let item of combinationTimesSteps"> -->
+    <div *ngIf="counterCombination <= stepsNCombinations">
+        <mat-step [stepControl]="nextFormGroup">
+            <form [formGroup]="nextFormGroup">
+                <ng-template matStepLabel="Next Combination">{{counterCombination}}</ng-template>
+                <mat-form-field appearance="fill" class="combination">
+                    <mat-label>{{counterCombination}} N Combination</mat-label>
+                    <input matInput id="{{counterCombination}}" placeholder="{{counterCombination}} N Combination"
+                        formControlName="nextCtrl" [value]="nextNCombinations" readonly>
+                </mat-form-field>
+                <div>
+                    <button mat-button matStepperPrevious (click)="onClickBack()">Back</button>
+                    <button mat-button matStepperNext (click)="onSubmitNextCombination()">Next</button>
+                    <button mat-button (click)="onPaginatorNext()">Get Next Pagination </button>
+                </div>
+            </form>
+        </mat-step>
+    </div>
+
+
+    <div *ngIf="this.counterCombination > this.stepsNCombinations">
+        <mat-step>
+            <ng-template matStepLabel="stepsNCombinations">Done</ng-template>
+            <p>You are now done.</p>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepper.reset(); combinationTimesSteps=3 ">Reset</button>
+            </div>
+        </mat-step>
+    </div>
+</mat-stepper>
+
+<div class="example-container mat-elevation-z8">
+    <!-- <div class="example-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+
+    </div> -->
+
+    <div class="example-table-container">
+
+        <table mat-table [dataSource]="data" class="example-table" matSort matSortActive="created" matSortDisableClear
+            matSortDirection="desc">
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef>position</th>
+                <td mat-cell *matCellDef="let row">{{row.position}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>description</th>
+                <td mat-cell *matCellDef="let row">{{row.description}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="combination">
+                <th mat-header-cell *matHeaderCellDef>combination</th>
+                <td mat-cell *matCellDef="let row">{{row.combination}}</td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+
+    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="resultsLength"
+        [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+        [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+    </mat-paginator>
+
+
+</div>
